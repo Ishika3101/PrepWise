@@ -1,5 +1,3 @@
-"use client"
-
 import { db } from '@/firebase/client';
 import { doc, setDoc, collection, addDoc, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
 import type { Interview, Feedback, CreateFeedbackParams } from '@/types';

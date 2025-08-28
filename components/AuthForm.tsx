@@ -64,7 +64,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
     
     try {
       let result;
-      const actions = await import('@/lib/actions/auth.action');
+      const actions = await import('@/lib/actions/client-auth.action');
       
       if (type === "sign-in") {
         result = await actions.signIn(values.email, values.password);
