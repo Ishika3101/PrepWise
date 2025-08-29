@@ -1,5 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createInterview } from '@/lib/actions/server-interview.action';
+
+// Dynamic import to avoid build-time issues
+async function getCreateInterview() {
+  try {
+    const { createInterview } = await import('@/lib/actions/server-interview.action');
+    return createInterview;
+  } catch (error) {
+    console.error('Failed to import createInterview:', error);
+    return null;
+  }
+}
 
 export async function GET() { 
     return NextResponse.json({ success: true, data: 'THANK YOU!' }, { status: 200 }); 
@@ -35,6 +45,15 @@ export async function POST(request: NextRequest) {
         };
 
         console.log('Creating interview with data:', interviewData);
+        
+        const createInterview = await getCreateInterview();
+        if (!createInterview) {
+            return NextResponse.json({ 
+                success: false, 
+                error: 'Failed to initialize interview service' 
+            }, { status: 500 });
+        }
+
         const result = await createInterview(interviewData);
 
         if (result.success) {
