@@ -14,7 +14,9 @@ export async function isAuthenticated(): Promise<boolean> {
     const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true);
     return !!decodedClaims;
   } catch (error) {
-    console.error('Authentication check error:', error);
+    // Avoid noisy errors in dev overlay; this often occurs for missing/expired cookies
+    const message = (error as any)?.message ?? 'Unknown error';
+    console.warn('Authentication check warning:', message);
     return false;
   }
 }

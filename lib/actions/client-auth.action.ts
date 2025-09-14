@@ -40,10 +40,9 @@ export async function signUp(email: string, password: string, name: string) {
     return { success: true, user };
   } catch (error: any) {
     console.error('Sign up error:', error);
-    return { 
-      success: false, 
-      error: error.message || 'Failed to create account' 
-    };
+    const code = error?.code as string | undefined;
+    const message = mapFirebaseAuthError(code) ?? error?.message ?? 'Failed to create account';
+    return { success: false, error: message };
   }
 }
 
@@ -59,10 +58,9 @@ export async function signIn(email: string, password: string) {
     return { success: true, user };
   } catch (error: any) {
     console.error('Sign in error:', error);
-    return { 
-      success: false, 
-      error: error.message || 'Failed to sign in' 
-    };
+    const code = error?.code as string | undefined;
+    const message = mapFirebaseAuthError(code) ?? error?.message ?? 'Failed to sign in';
+    return { success: false, error: message };
   }
 }
 
@@ -78,6 +76,25 @@ export async function signOut() {
       success: false, 
       error: error.message || 'Failed to sign out' 
     };
+  }
+}
+
+function mapFirebaseAuthError(code?: string): string | null {
+  switch (code) {
+    case 'auth/invalid-credential':
+      return 'Invalid email or password.';
+    case 'auth/user-not-found':
+      return 'No account found with this email.';
+    case 'auth/wrong-password':
+      return 'Incorrect password.';
+    case 'auth/too-many-requests':
+      return 'Too many attempts. Try again later.';
+    case 'auth/email-already-in-use':
+      return 'This email is already in use.';
+    case 'auth/weak-password':
+      return 'Password is too weak.';
+    default:
+      return null;
   }
 }
 

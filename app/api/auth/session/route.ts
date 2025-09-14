@@ -11,13 +11,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Create session cookie
+    // 5 days in milliseconds for Firebase Admin createSessionCookie
     const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
     const sessionCookie = await adminAuth.createSessionCookie(idToken, { expiresIn });
     
     // Set the session cookie
     const cookieStore = await cookies();
     cookieStore.set('session', sessionCookie, {
-      maxAge: expiresIn,
+      // maxAge expects seconds, not milliseconds
+      maxAge: Math.floor(expiresIn / 1000),
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
