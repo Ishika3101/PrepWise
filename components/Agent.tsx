@@ -1,9 +1,6 @@
-"use client";
-
 import Image from "next/image";
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants";
@@ -56,7 +53,7 @@ const Agent = ({
     const onMessage = (message: Message) => {
       if (message.type === "transcript" && message.transcriptType === "final") {
         const newMessage = { role: message.role, content: message.transcript };
-        setMessages((prev) => [...prev, newMessage]);
+        setMessages((prev: SavedMessage[]) => [...prev, newMessage]);
       }
     };
 
@@ -166,12 +163,11 @@ const Agent = ({
   return (
     <>
       <div className="call-view">
-        {/* AI Interviewer Card */}
         <div className="card-interviewer">
           <div className="avatar">
             <Image
               src="/ai-avatar.png"
-              alt="profile-image"
+              alt="vapi"
               width={65}
               height={54}
               className="object-cover"
@@ -181,14 +177,13 @@ const Agent = ({
           <h3>AI Interviewer</h3>
         </div>
 
-        {/* User Profile Card */}
         <div className="card-border">
           <div className="card-content">
             <Image
               src="/user-avatar.png"
-              alt="profile-image"
-              width={539}
-              height={539}
+              alt="user avatar"
+              width={540}
+              height={540}
               className="rounded-full object-cover size-[120px]"
             />
             <h3>{userName}</h3>
@@ -233,7 +228,7 @@ const Agent = ({
             End
           </button>
         )}
-      </div>
+      </div> 
     </>
   );
 };
