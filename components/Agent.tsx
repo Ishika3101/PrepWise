@@ -94,7 +94,7 @@ const Agent = ({
     }
 
     const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-      console.log("handleGenerateFeedback");
+      console.log("Generate feedback here.");
 
       if (!interviewId || !userId) return;
 
