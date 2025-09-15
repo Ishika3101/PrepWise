@@ -99,8 +99,8 @@ const Agent = ({
       if (!interviewId || !userId) return;
 
       const { success, feedbackId: id } = await createFeedback({
-        interviewId: interviewId,
-        userId: userId,
+        interviewId: interviewId!,
+        userId: userId!,
         transcript: messages,
         feedbackId,
       });
